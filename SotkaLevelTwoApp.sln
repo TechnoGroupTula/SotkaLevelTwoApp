@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SotkaLevelTwoCore", "SotkaLevelTwoCore\SotkaLevelTwoCore.csproj", "{A1BB6F05-8809-47C9-87CB-D43A4DECA151}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SotkaLevelTwoMaster", "SotkaLevelTwoMaster\SotkaLevelTwoMaster.csproj", "{534AFF80-8C49-4633-9058-81A9F262EE5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SotkaLevelTwoSlave", "SotkaLevelTwoSlave\SotkaLevelTwoSlave.csproj", "{83BB274C-B8EB-4594-A2EB-9851492BD496}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1BB6F05-8809-47C9-87CB-D43A4DECA151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BB6F05-8809-47C9-87CB-D43A4DECA151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BB6F05-8809-47C9-87CB-D43A4DECA151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BB6F05-8809-47C9-87CB-D43A4DECA151}.Release|Any CPU.Build.0 = Release|Any CPU
+		{534AFF80-8C49-4633-9058-81A9F262EE5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{534AFF80-8C49-4633-9058-81A9F262EE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{534AFF80-8C49-4633-9058-81A9F262EE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{534AFF80-8C49-4633-9058-81A9F262EE5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83BB274C-B8EB-4594-A2EB-9851492BD496}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83BB274C-B8EB-4594-A2EB-9851492BD496}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83BB274C-B8EB-4594-A2EB-9851492BD496}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83BB274C-B8EB-4594-A2EB-9851492BD496}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

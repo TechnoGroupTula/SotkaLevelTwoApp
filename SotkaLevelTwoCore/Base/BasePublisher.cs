@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SotkaLevelTwoCore
+namespace SotkaLevelTwoCore.Base
 {
-    public interface INetConnector
+    public class BasePublisher : BaseServer
     {
+    }
+
+    public class BaseSubscriber : BaseClient
+    {
+
     }
 }

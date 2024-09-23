@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace SotkaLevelTwoCore.Base
 {
-    public class BasePublisher : BaseServer
+    public class BasePublisher : BaseClient
     {
     }
 
-    public class BaseSubscriber : BaseClient
+    public class BaseSubscriber : BaseServer
     {
-
+        public BaseSubscriber(SocketProtocolStack protocolStack) : base(protocolStack)
+        {
+        }
     }
 }

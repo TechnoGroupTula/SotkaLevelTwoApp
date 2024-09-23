@@ -2,36 +2,130 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SotkaLevelTwoCore.Base
 {
-    public class BaseAddress
+    public class SocketProtocolStack
     {
-        public IPAddress IPAddress { get; set; }
-        public int Port { get; set; }
-        public IPEndPoint IPAddressEndPoint { get; set; }
+        private AddressFamily _family;
+        private SocketType _type;
+        private ProtocolType _protocol;
 
-        public BaseAddress() : this(IPAddress.None, 0) { }
-
-        public BaseAddress(IPAddress iPAddress, int port)
+        public AddressFamily Family
         {
-            IPAddress = iPAddress;
-            Port = port;
+            set => _family = value;
+            get => _family;
+        }
 
-            IPAddressEndPoint = new IPEndPoint(IPAddress, Port);
+        public SocketType Type
+        {
+            set => _type = value;
+            get => _type;
+        }
+
+        public ProtocolType Protocol
+        {
+            set => _protocol = value;
+            get => _protocol;
+        }
+
+        public SocketProtocolStackBuilder GetBuilder()
+        {
+            return new SocketProtocolStackBuilder();
         }
     }
-
-    class AddressBuilder
+    public class SocketProtocolStackBuilder
     {
-        private BaseAddress _address;
-        public AddressBuilder()
+        private SocketProtocolStack _address = null!;
+
+        public SocketProtocolStackBuilder()
         {
-            _address = new BaseAddress();
+            _address = new SocketProtocolStack();
         }
 
-        public AddressBuilder SetIp
+        public SocketProtocolStackBuilder SetFamily(AddressFamily family)
+        {
+            _address.Family = family;
+            return this;
+        }
+
+        public SocketProtocolStackBuilder SetType(SocketType type)
+        {
+            _address.Type = type;
+            return this;
+        }
+
+        public SocketProtocolStackBuilder SetProtocol(ProtocolType protocol)
+        {
+            _address.Protocol = protocol;
+            return this;
+        }
+
+        public SocketProtocolStack GetSocketProtocolStack()
+        {
+            return _address;
+        }
+
+    }
+
+    public class SocketEndPoint
+    {
+        private EndPoint? _endPoint;
+        private IPAddress? _ipAddress;
+        private int _port;
+
+        public EndPoint? Point
+        {
+            get => _endPoint;
+            set => _endPoint = value;
+        }
+
+        public IPAddress? Address
+        {
+            get => _ipAddress; 
+            set => _ipAddress = value;
+        }
+
+        public int Port
+        {
+            get => _port;
+            set => _port = value;
+        }
+        public SocketEndPointBuilder Builder() => new SocketEndPointBuilder();
+
+    }
+    public class SocketEndPointBuilder
+    {
+        private SocketEndPoint _socketEndPoint = null!;
+        public SocketEndPointBuilder()
+        {
+            _socketEndPoint = new SocketEndPoint();
+        }
+
+        public SocketEndPointBuilder SetAddress(IPAddress address)
+        {
+            _socketEndPoint.Address = address;
+            return this;
+        }
+
+        public SocketEndPointBuilder SetPort(int port)
+        {
+            _socketEndPoint.Port = port;
+            return this;
+        }
+
+        public SocketEndPoint GetSocketEndPoint()
+        {
+            if (_socketEndPoint.Address is not null && _socketEndPoint.Port != 0)
+                _socketEndPoint.Point = new IPEndPoint(_socketEndPoint.Address, _socketEndPoint.Port);
+            else
+                throw new NullReferenceException();
+
+            return _socketEndPoint;
+        }
+
     }
 }

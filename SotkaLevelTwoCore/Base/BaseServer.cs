@@ -9,45 +9,65 @@ using System.Net.Sockets;
 
 namespace SotkaLevelTwoCore.Base
 {
-    public abstract class BaseServer
+    /// <summary>
+    /// Base Listener 
+    ///     для Master - издатель для Master
+    ///     для Slave  - для получения запросов от Master
+    ///     
+    ///     Socket - сокет Listener
+    ///     Active - флаг активности сервера
+    ///     
+    /// </summary>
+    public class BaseServer
     {
-        BaseAddress? _address;
-        AddressBuilder? _addressBuilder;
-        
-        AddressFamily _family = AddressFamily.Unknown;
-        SocketType _type = SocketType.Unknown;
-        ProtocolType _protocol = ProtocolType.Unknown;
+        private Socket? _socket;
 
-        Socket? _socket = null;
+        private bool _active;
 
-        public BaseServer(BaseAddress? address = null)
+        private SocketProtocolStack? _protocolStack;
+
+        private SocketEndPoint? _endPoint;
+
+        private volatile CancellationTokenSource? _cancellationTokenSource;
+
+        public BaseServer(SocketProtocolStack protocolStack)
         {
-            this._address = address;
+            this._protocolStack = protocolStack;
+            this._active = false;
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            _socket = new Socket(_protocolStack.Family, protocolStack.Type, protocolStack.Protocol);
         }
 
-        
-    }
+        public SocketEndPoint? EndPoint
+        {
+            get => _endPoint;
+            set => _endPoint = value;
+        }
 
-    /// <summary>
-    /// OPC DA (Data Access)
-    /// </summary>
-    public class DaServer : BaseServer
-    {
+        public void Start()
+        {
+            _socket?.Bind(_endPoint?.Point!);
+            _socket?.Listen();
+        }
 
-    }
+        public BaseClient Accept()
+        {
+            Socket? _client = _socket?.Accept();
 
-    /// <summary>
-    /// OPC HDA (Historical Data Access)
-    /// </summary>
-    public class HdaServer : BaseServer
-    {
+            return new BaseClient();
+        }
 
-    }
-    /// <summary>
-    /// OPC AE (Alarms & Events)
-    /// </summary>
-    public class AeServer : BaseServer
-    {
+        public async Task<BaseClient> AcceptAsyc()
+        {
+            Socket? _client = await _socket?.AcceptAsync()!;
 
+            return new BaseClient();
+        }
+
+        public void Stop()
+        {
+            _socket?.Close();
+        }
     }
 }

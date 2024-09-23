@@ -34,9 +34,11 @@ namespace SotkaLevelTwoCore.Base
         {
             this._protocolStack = protocolStack;
             this._active = false;
-            _cancellationTokenSource = new CancellationTokenSource();
+            this._cancellationTokenSource = new CancellationTokenSource();
 
-            _socket = new Socket(_protocolStack.Family, protocolStack.Type, protocolStack.Protocol);
+            this._socket = new Socket(_protocolStack.Family,
+                                      _protocolStack.Type,
+                                      _protocolStack.Protocol);
         }
 
         public SocketEndPoint? EndPoint
@@ -47,6 +49,14 @@ namespace SotkaLevelTwoCore.Base
 
         public void Start()
         {
+            _socket?.Bind(_endPoint?.Point!);
+            _socket?.Listen();
+        }
+
+        public void Start(SocketEndPoint endPoint)
+        {
+            _endPoint = endPoint;
+
             _socket?.Bind(_endPoint?.Point!);
             _socket?.Listen();
         }

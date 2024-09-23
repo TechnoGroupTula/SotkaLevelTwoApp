@@ -21,14 +21,14 @@ namespace SotkaLevelTwoCore.Base
     public class BaseServer
     {
         private Socket? _socket;
-
         private bool _active;
-
         private SocketProtocolStack? _protocolStack;
-
         private SocketEndPoint? _endPoint;
-
         private volatile CancellationTokenSource? _cancellationTokenSource;
+
+        public event ServerHandler? Started;
+        public event ServerHandler? Stoped;
+        public event ServerHandler? ClientAcceped;
 
         public BaseServer(SocketProtocolStack protocolStack)
         {
@@ -51,6 +51,7 @@ namespace SotkaLevelTwoCore.Base
         {
             _socket?.Bind(_endPoint?.Point!);
             _socket?.Listen();
+            Started?.Invoke(this, new ServerEventArgs());
         }
 
         public void Start(SocketEndPoint endPoint)
@@ -59,11 +60,13 @@ namespace SotkaLevelTwoCore.Base
 
             _socket?.Bind(_endPoint?.Point!);
             _socket?.Listen();
+            Started?.Invoke(this, new ServerEventArgs());
         }
 
         public BaseClient Accept()
         {
             Socket? _client = _socket?.Accept();
+            ClientAcceped?.Invoke(this, new ServerEventArgs());
 
             return new BaseClient();
         }
@@ -71,6 +74,7 @@ namespace SotkaLevelTwoCore.Base
         public async Task<BaseClient> AcceptAsyc()
         {
             Socket? _client = await _socket?.AcceptAsync()!;
+            ClientAcceped?.Invoke(this, new ServerEventArgs());
 
             return new BaseClient();
         }
@@ -78,6 +82,7 @@ namespace SotkaLevelTwoCore.Base
         public void Stop()
         {
             _socket?.Close();
+            Stoped?.Invoke(this, new ServerEventArgs());
         }
     }
 }

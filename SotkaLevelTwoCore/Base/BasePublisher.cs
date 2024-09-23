@@ -8,6 +8,9 @@ namespace SotkaLevelTwoCore.Base
 {
     public class BasePublisher : BaseClient
     {
+        public BasePublisher(SocketProtocolStack protocolStack) : base(protocolStack)
+        {
+        }
     }
 
     public class BaseSubscriber : BaseServer

@@ -28,6 +28,15 @@ namespace SotkaLevelTwoSlave
             server.Stop();
             Console.WriteLine("Server stop");
 
+            //BaseServerFactory factory = BaseServer.Factory();
+
+            //BaseServer baseServer = factory.Server( 
+            //    b => b.SetFamily(AddressFamily.InterNetwork)
+            //          .SetProtocol(ProtocolType.Tcp)
+            //          .SetType(SocketType.Stream)
+            //          .GetSocketProtocolStack()
+            //);
+
         }
     }
 }

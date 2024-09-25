@@ -13,10 +13,5 @@ namespace SotkaLevelTwoCore.Base
         }
     }
 
-    public class BaseSubscriber : BaseServer
-    {
-        public BaseSubscriber(SocketProtocolStack protocolStack) : base(protocolStack)
-        {
-        }
-    }
+    
 }

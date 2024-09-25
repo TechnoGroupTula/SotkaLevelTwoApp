@@ -51,7 +51,7 @@ namespace SotkaLevelTwoCore.Base
         {
             _socket?.Bind(_endPoint?.Point!);
             _socket?.Listen();
-            Started?.Invoke(this, new ServerEventArgs());
+            Started?.Invoke(this, new ServerEventArgs(this));
         }
 
         public void Start(SocketEndPoint endPoint)
@@ -60,13 +60,13 @@ namespace SotkaLevelTwoCore.Base
 
             _socket?.Bind(_endPoint?.Point!);
             _socket?.Listen();
-            Started?.Invoke(this, new ServerEventArgs());
+            Started?.Invoke(this, new ServerEventArgs(this));
         }
 
         public BaseClient Accept()
         {
             Socket? _client = _socket?.Accept();
-            ClientAcceped?.Invoke(this, new ServerEventArgs());
+            ClientAcceped?.Invoke(this, new ServerEventArgs(this));
 
             return new BaseClient();
         }
@@ -74,7 +74,7 @@ namespace SotkaLevelTwoCore.Base
         public async Task<BaseClient> AcceptAsyc()
         {
             Socket? _client = await _socket?.AcceptAsync()!;
-            ClientAcceped?.Invoke(this, new ServerEventArgs());
+            ClientAcceped?.Invoke(this, new ServerEventArgs(this));
 
             return new BaseClient();
         }
@@ -82,7 +82,34 @@ namespace SotkaLevelTwoCore.Base
         public void Stop()
         {
             _socket?.Close();
-            Stoped?.Invoke(this, new ServerEventArgs());
+            Stoped?.Invoke(this, new ServerEventArgs(this));
         }
+
+        public static BaseServerFactory Factory()
+        {
+            return new BaseServerFactory();
+        }
+    }
+
+    public class BaseServerFactory
+    {
+        public BaseServerFactory() { }
+
+        public BaseServer Server(Func<SocketProtocolStackBuilder, SocketProtocolStack> stack)
+        {
+            return new BaseServer(stack(new SocketProtocolStackBuilder()));
+        }
+
+        public BaseServer DefaultServer()
+        {
+            var defaultStack = new SocketProtocolStackBuilder()
+                                    .SetFamily(AddressFamily.InterNetwork)
+                                    .SetType(SocketType.Stream)
+                                    .SetProtocol(ProtocolType.Tcp)
+                                    .GetSocketProtocolStack();
+            
+            return new BaseServer(defaultStack);
+        }
+
     }
 }

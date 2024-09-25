@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace SotkaLevelTwoCore.Base
 {
-    public class BaseConfigurationManager
+    public class BaseSubscriber : BaseServer
     {
-        
+        public BaseSubscriber(SocketProtocolStack protocolStack) : base(protocolStack)
+        {
+        }
     }
 }

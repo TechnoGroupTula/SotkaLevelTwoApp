@@ -51,7 +51,7 @@ namespace SotkaLevelTwoCore.Base
         public void Connect()
         {
             _socket?.Connect(_endPoint!.Address!, _endPoint!.Port);
-            Connected?.Invoke(this, new ClientEventArgs());
+            Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public void Connect(SocketEndPoint endPoint)
@@ -59,13 +59,13 @@ namespace SotkaLevelTwoCore.Base
             _endPoint = endPoint;
 
             _socket?.Connect(_endPoint!.Address!, _endPoint!.Port);
-            Connected?.Invoke(this, new ClientEventArgs());
+            Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public async Task ConnectAsync()
         {
             await _socket!.ConnectAsync(_endPoint!.Address!, _endPoint!.Port);
-            Connected?.Invoke(this, new ClientEventArgs());
+            Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public async Task ConnectAsync(SocketEndPoint endPoint)
@@ -73,19 +73,45 @@ namespace SotkaLevelTwoCore.Base
             _endPoint = endPoint;
 
             await _socket!.ConnectAsync(_endPoint!.Address!, _endPoint!.Port);
-            Connected?.Invoke(this, new ClientEventArgs());
+            Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public void Disconnect()
         {
             _socket!.Disconnect(false);
-            Disconnected?.Invoke(this, new ClientEventArgs());
+            Disconnected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public async Task DisconnectAsync()
         {
             await _socket!.DisconnectAsync(false);
-            Disconnected?.Invoke(this, new ClientEventArgs());
+            Disconnected?.Invoke(this, new ClientEventArgs(this));
+        }
+
+        public BaseClientFactory Factory()
+        {
+            return new BaseClientFactory();
+        }
+    }
+
+    public class BaseClientFactory
+    {
+        public BaseClientFactory() { }
+
+        public BaseClient Client(Func<SocketProtocolStackBuilder, SocketProtocolStack> stack)
+        {
+            return new BaseClient(stack(new SocketProtocolStackBuilder()));
+        }
+
+        public BaseClient DefaultClient()
+        {
+            var defaultStack = new SocketProtocolStackBuilder()
+                                    .SetFamily(AddressFamily.InterNetwork)
+                                    .SetType(SocketType.Stream)
+                                    .SetProtocol(ProtocolType.Tcp)
+                                    .GetSocketProtocolStack();
+
+            return new BaseClient(defaultStack);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace SotkaLevelTwoSlave
         static void Main(string[] args)
         {
             SocketEndPointBuilder builder = new SocketEndPointBuilder();
-            SocketEndPoint socketEndPoint = builder.SetAddress(IPAddress.Loopback)
+            SocketEndPoint socketEndPoint = builder.SetAddress(IPAddress.Any)
                                                    .SetPort(30000)
                                                    .GetSocketEndPoint();
 

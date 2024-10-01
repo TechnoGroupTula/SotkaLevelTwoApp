@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace SotkaLevelTwoCore.Base
 {
+    #region Protocol Stack for Socket
+    /// <summary>
+    /// Configuration protocols for socket
+    /// </summary>
     public class SocketProtocolStack
     {
         private AddressFamily _family;
@@ -37,6 +41,9 @@ namespace SotkaLevelTwoCore.Base
             return new SocketProtocolStackBuilder();
         }
     }
+    /// <summary>
+    /// Builder for class protocols stack 
+    /// </summary>
     public class SocketProtocolStackBuilder
     {
         private SocketProtocolStack _address = null!;
@@ -70,7 +77,12 @@ namespace SotkaLevelTwoCore.Base
         }
 
     }
+    #endregion
 
+    #region End Point for Binding
+    /// <summary>
+    /// Configuration for end point
+    /// </summary>
     public class SocketEndPoint
     {
         private EndPoint? _endPoint;
@@ -97,6 +109,9 @@ namespace SotkaLevelTwoCore.Base
         public SocketEndPointBuilder Builder() => new SocketEndPointBuilder();
 
     }
+    /// <summary>
+    /// Builder for class end point
+    /// </summary>
     public class SocketEndPointBuilder
     {
         private SocketEndPoint _socketEndPoint = null!;
@@ -104,19 +119,21 @@ namespace SotkaLevelTwoCore.Base
         {
             _socketEndPoint = new SocketEndPoint();
         }
-
         public SocketEndPointBuilder SetAddress(IPAddress address)
         {
             _socketEndPoint.Address = address;
             return this;
         }
-
+        public SocketEndPointBuilder SetAddress(string address)
+        {
+            _socketEndPoint.Address = IPAddress.Parse(address);
+            return this;
+        }
         public SocketEndPointBuilder SetPort(int port)
         {
             _socketEndPoint.Port = port;
             return this;
         }
-
         public SocketEndPoint GetSocketEndPoint()
         {
             if (_socketEndPoint.Address is not null && _socketEndPoint.Port != 0)
@@ -128,4 +145,5 @@ namespace SotkaLevelTwoCore.Base
         }
 
     }
+    #endregion
 }

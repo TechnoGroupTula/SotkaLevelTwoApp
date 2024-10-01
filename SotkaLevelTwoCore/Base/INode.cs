@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace SotkaLevelTwoCore.Base
 {
-    public class BasePublisher : BaseClient
+    enum NodeType
     {
-        public BasePublisher(SocketProtocolStack protocolStack) : base(protocolStack)
-        {
-        }
+        Value,
+        Type,
+        Method
     }
-
-    
+        
+    public interface INode
+    {
+    }
 }

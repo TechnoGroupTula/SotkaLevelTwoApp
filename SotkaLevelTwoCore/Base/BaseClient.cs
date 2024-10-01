@@ -13,10 +13,12 @@ namespace SotkaLevelTwoCore.Base
         /// private fields
         /// </summary>
         private Socket? _socket;
-        private SocketEndPoint? _endPoint;
         private SocketProtocolStack? _protocolStack;
 
-        private BaseServer? _server;
+        private SocketEndPoint? _serverEndPoint;
+
+        private NetworkStream? _readerStream;
+        private NetworkStream? _writerStream;
 
         public event ClientHandler? Connected;
         public event ClientHandler? Disconnected;
@@ -34,15 +36,22 @@ namespace SotkaLevelTwoCore.Base
             this._socket = new Socket(_protocolStack.Family,
                                       _protocolStack.Type,
                                       _protocolStack.Protocol);
+            this._readerStream = new NetworkStream(this._socket);
+            this._writerStream = new NetworkStream(this._socket);
         }
 
         /// <summary>
         /// properties
         /// </summary>
-        public SocketEndPoint? EndPoint
+        public SocketEndPoint? ServerEndPoint
         {
-            get => _endPoint;
-            set => _endPoint = value;
+            get => _serverEndPoint;
+            set => _serverEndPoint = value;
+        }
+
+        public NetworkStream ReaderStream
+        {
+
         }
 
         /// <summary>
@@ -50,29 +59,29 @@ namespace SotkaLevelTwoCore.Base
         /// </summary>
         public void Connect()
         {
-            _socket?.Connect(_endPoint!.Address!, _endPoint!.Port);
+            _socket?.Connect(_serverEndPoint!.Address!, _serverEndPoint!.Port);
             Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public void Connect(SocketEndPoint endPoint)
         {
-            _endPoint = endPoint;
+            _serverEndPoint = endPoint;
 
-            _socket?.Connect(_endPoint!.Address!, _endPoint!.Port);
+            _socket?.Connect(_serverEndPoint!.Address!, _serverEndPoint!.Port);
             Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public async Task ConnectAsync()
         {
-            await _socket!.ConnectAsync(_endPoint!.Address!, _endPoint!.Port);
+            await _socket!.ConnectAsync(_serverEndPoint!.Address!, _serverEndPoint!.Port);
             Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
         public async Task ConnectAsync(SocketEndPoint endPoint)
         {
-            _endPoint = endPoint;
+            _serverEndPoint = endPoint;
 
-            await _socket!.ConnectAsync(_endPoint!.Address!, _endPoint!.Port);
+            await _socket!.ConnectAsync(_serverEndPoint!.Address!, _serverEndPoint!.Port);
             Connected?.Invoke(this, new ClientEventArgs(this));
         }
 
@@ -103,7 +112,7 @@ namespace SotkaLevelTwoCore.Base
             return new BaseClient(stack(new SocketProtocolStackBuilder()));
         }
 
-        public BaseClient DefaultClient()
+        static public BaseClient DefaultClient()
         {
             var defaultStack = new SocketProtocolStackBuilder()
                                     .SetFamily(AddressFamily.InterNetwork)

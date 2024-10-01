@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Types\" />
     <Folder Include="Security\" />
-    <Folder Include="Configurations\" />
   </ItemGroup>
 
 </Project>

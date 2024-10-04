@@ -49,10 +49,10 @@ namespace SotkaLevelTwoCore.Base
             set => _serverEndPoint = value;
         }
 
-        public NetworkStream ReaderStream
-        {
+        //public NetworkStream ReaderStream
+        //{
 
-        }
+        //}
 
         /// <summary>
         /// methods

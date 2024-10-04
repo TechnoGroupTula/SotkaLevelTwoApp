@@ -1,4 +1,5 @@
-﻿using SotkaLevelTwoCore.Base;
+﻿using Microsoft.Extensions.Configuration;
+using SotkaLevelTwoCore.Base;
 using System.Net;
 using System.Net.Sockets;
 
@@ -8,11 +9,6 @@ namespace SotkaLevelTwoMaster
     {
         static void Main(string[] args)
         {
-            SocketEndPointBuilder builder = new SocketEndPointBuilder();
-            SocketEndPoint socketEndPoint = builder.SetAddress(IPAddress.Loopback)
-                                                   .SetPort(30000)
-                                                   .GetSocketEndPoint();
-
             SocketProtocolStackBuilder stackBuilder = new SocketProtocolStackBuilder();
             SocketProtocolStack socketProtocolStack = stackBuilder.SetFamily(AddressFamily.InterNetwork)
                                                                   .SetType(SocketType.Stream)
@@ -20,7 +16,24 @@ namespace SotkaLevelTwoMaster
                                                                   .GetSocketProtocolStack();
 
             BaseClient client = new BaseClient(socketProtocolStack);
-            client.Connect(socketEndPoint);
+
+
+            SocketEndPoint? socketEndPoint = null;
+            try
+            {
+                 socketEndPoint = new ClientConfigurationLoader().LoadXmlConfiguration();
+            }
+            catch (FileNotFoundException ex)
+            {
+                //Обрабатываем исключение
+            }
+            catch (MissingConfigurationException ex)
+            {
+                //Обрабатываем исключение
+            }
+
+            if (socketEndPoint is not null)
+                client.Connect(socketEndPoint);
         }
     }
 }

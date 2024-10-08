@@ -1,4 +1,5 @@
 ﻿using SotkaLevelTwoCore.Base;
+using SotkaLevelTwoCore.Types;
 using System.Net;
 using System.Net.Sockets;
 

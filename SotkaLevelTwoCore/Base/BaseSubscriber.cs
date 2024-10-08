@@ -1,26 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using SotkaLevelTwoCore.Types;
 
 namespace SotkaLevelTwoCore.Base
 {
     public class BaseSubscriber
     {
-        private BaseClient _subsriber;
+        private BaseClient _client;
 
         private SocketEndPoint? _publisherEndPoint;
-        private BaseServer? _publisher;
+        private BasePublisher? _publisher;
+
+        private IPAddress _localIpAddress;
 
         public BaseSubscriber()
         {
-            _subsriber = BaseClientFactory.DefaultClient();
+            _client = BaseClientFactory.DefaultClient();
         }
         public BaseSubscriber(SocketEndPoint publisherEndPoint) : this()
         {
-            _publisherEndPoint = publisherEndPoint;
+            _publisher = new BasePublisher(publisherEndPoint);
+        }
+        public BaseSubscriber(BaseClient client, BasePublisher publisher)
+        {
+            _client = client;
+            _publisher = publisher;
         }
 
         public bool Subscribe()
@@ -28,7 +37,7 @@ namespace SotkaLevelTwoCore.Base
             try
             {
                 if (_publisherEndPoint is not null)
-                    _subsriber.Connect(_publisherEndPoint);
+                    _client.Connect(_publisherEndPoint);
 
             }
             catch(Exception ex)

@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SotkaLevelTwoCore.Base
+namespace SotkaLevelTwoCore.Types
 {
     #region Protocol Stack for Socket
     /// <summary>
@@ -87,7 +87,7 @@ namespace SotkaLevelTwoCore.Base
     {
         private EndPoint? _endPoint;
         private IPAddress? _ipAddress;
-        private int _port;
+        private Port _port;
 
         public EndPoint? Point
         {
@@ -97,11 +97,11 @@ namespace SotkaLevelTwoCore.Base
 
         public IPAddress? Address
         {
-            get => _ipAddress; 
+            get => _ipAddress;
             set => _ipAddress = value;
         }
 
-        public int Port
+        public Port Port
         {
             get => _port;
             set => _port = value;
@@ -109,6 +109,7 @@ namespace SotkaLevelTwoCore.Base
         public SocketEndPointBuilder Builder() => new SocketEndPointBuilder();
 
     }
+
     /// <summary>
     /// Builder for class end point
     /// </summary>
@@ -129,7 +130,7 @@ namespace SotkaLevelTwoCore.Base
             _socketEndPoint.Address = IPAddress.Parse(address);
             return this;
         }
-        public SocketEndPointBuilder SetPort(int port)
+        public SocketEndPointBuilder SetPort(Port port)
         {
             _socketEndPoint.Port = port;
             return this;

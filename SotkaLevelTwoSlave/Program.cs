@@ -1,6 +1,7 @@
 ﻿using SotkaLevelTwoCore.Base;
 using System.Net.Sockets;
 using System.Net;
+using SotkaLevelTwoCore.Types;
 
 namespace SotkaLevelTwoSlave
 {

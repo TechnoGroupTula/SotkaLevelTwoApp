@@ -221,15 +221,15 @@ namespace SotkaLevelTwoCore.Base
         /// <summary>
         /// Фабричный метод
         /// </summary>
-        /// <param name="stack">
+        /// <param name="stackBuilder">
         /// Строитель стека протоколов
         /// </param>
         /// <returns>
         /// Сервер BaseServer
         /// </returns>
-        public BaseServer Server(Func<SocketProtocolStackBuilder, SocketProtocolStack> stack)
+        public BaseServer Server(Func<SocketProtocolStackBuilder, SocketProtocolStack> stackBuilder)
         {
-            return new BaseServer(stack(new SocketProtocolStackBuilder()));
+            return new BaseServer(stackBuilder(new SocketProtocolStackBuilder()));
         }
 
         /// <summary>

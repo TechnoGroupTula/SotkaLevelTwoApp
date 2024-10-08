@@ -80,9 +80,16 @@ namespace SotkaLevelTwoCore.Base
             set => _serverEndPoint = value;
         }
 
-        public NetworkStream ReaderStream
+        public NetworkStream? ReaderStream
         {
+            get => _readerStream;
+            set => _readerStream = value;
+        }
 
+        public NetworkStream? WriterStream
+        {
+            get => _writerStream;
+            set => _writerStream = value;
         }
 
         #region Methods

@@ -130,6 +130,12 @@ namespace SotkaLevelTwoCore.Types
             _socketEndPoint.Address = IPAddress.Parse(address);
             return this;
         }
+
+        public SocketEndPointBuilder SetPort(int port)
+        {
+            _socketEndPoint.Port = (Port)port;
+            return this;
+        }
         public SocketEndPointBuilder SetPort(Port port)
         {
             _socketEndPoint.Port = port;

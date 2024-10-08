@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using SotkaLevelTwoCore.Types;
 using System;
 using System.Net;
 

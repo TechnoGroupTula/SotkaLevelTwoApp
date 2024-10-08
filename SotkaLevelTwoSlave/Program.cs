@@ -9,11 +9,6 @@ namespace SotkaLevelTwoSlave
     {
         static void Main(string[] args)
         {
-            SocketEndPointBuilder builder = new SocketEndPointBuilder();
-            SocketEndPoint socketEndPoint = builder.SetAddress(IPAddress.Any)
-                                                   .SetPort(30000)
-                                                   .GetSocketEndPoint();
-
             SocketProtocolStackBuilder stackBuilder = new SocketProtocolStackBuilder();
             SocketProtocolStack socketProtocolStack = stackBuilder.SetFamily(AddressFamily.InterNetwork)
                                                                   .SetType(SocketType.Stream)
@@ -21,6 +16,21 @@ namespace SotkaLevelTwoSlave
                                                                   .GetSocketProtocolStack();
 
             BaseServer server = new BaseServer(socketProtocolStack);
+
+            SocketEndPoint? socketEndPoint = null;
+            try
+            {
+                socketEndPoint = new ServerConfigurationLoader().LoadXmlConfiguration();
+            }
+            catch (FileNotFoundException ex)
+            {
+                //Обрабатываем исключение
+            }
+            catch (MissingConfigurationException ex)
+            {
+                //Обрабатываем исключение
+            }
+
             Console.WriteLine("Server start");
             server.Start(socketEndPoint);
 
